@@ -3,7 +3,9 @@ package external.chatgpt.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import external.chatgpt.controller.dto.ChatGptRequest;
 import external.chatgpt.controller.dto.ChatGptResponse;
+import external.chatgpt.controller.dto.Message;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,21 +23,15 @@ public class ChatGptController {
 
   @PostMapping("")
   public void chat(@RequestBody String prompt) throws IOException, InterruptedException {
-//    String prompt;
-//    if (args.length > 0) {
-//      prompt = args[0];
-//    } else {
-//      Scanner scanner = new Scanner(System.in);
-//      System.out.println("Enter a string to search for: ");
-//      prompt = scanner.nextLine();
-//    }
 
     ObjectMapper mapper = new ObjectMapper();
-    ChatGptRequest chatGptRequest = new ChatGptRequest("gpt-3.5-turbo", prompt, 1, 100);
+    Message message = new Message("user", prompt);
+    Message[] messages = {message};
+    ChatGptRequest chatGptRequest = new ChatGptRequest("gpt-3.5-turbo", messages, 1);
     String input = mapper.writeValueAsString(chatGptRequest);
 
     HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create("https://api.openai.com/v1/completions"))
+        .uri(URI.create("https://api.openai.com/v1/chat/completions"))
         .header("Content-Type", "application/json")
         .header("Authorization", "Bearer key")
         .POST(HttpRequest.BodyPublishers.ofString(input))
