@@ -6,7 +6,8 @@ public record ChatGptResponse(
     int created,
     String model,
     ChatGptResponseChoice[] choices,
-    ChatGptResponseUsage usage
+    ChatGptResponseUsage usage,
+    String system_fingerprint
 ) {
 
 }
