@@ -5,6 +5,8 @@ import external.chatgpt.controller.dto.ChatGptRequest;
 import external.chatgpt.controller.dto.ChatGptResponse;
 import external.chatgpt.controller.dto.ChatGptResponseChoice;
 import external.chatgpt.controller.dto.Message;
+import external.chatgpt.enums.Errors;
+import external.chatgpt.exception.BaseRuntimeException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -53,8 +55,7 @@ public class ChatGptClient {
       return choices[0].message().content().trim();
 
     } catch (Exception e) {
-      // TODO 오류 메시지 분리
-      throw new RuntimeException("chatgpt 서비스 사용 중 오류");
+      throw new BaseRuntimeException(Errors.EXTERNAL_API_ERROR);
     }
   }
 

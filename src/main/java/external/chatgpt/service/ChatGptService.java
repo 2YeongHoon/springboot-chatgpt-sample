@@ -13,4 +13,5 @@ public class ChatGptService {
   public String getContents(String prompt) {
     return gptClient.send(prompt);
   }
+
 }
